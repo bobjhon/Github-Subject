@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELOCITY - Next-Gen Motorcycles & Superbikes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0a0b0e',
+                        cardBg: '#12151c',
+                        cardHover: '#1a1f2b',
+                        neonCyan: '#00f0ff',
+                        neonRed: '#ff2a5f',
+                        neonYellow: '#ffe600',
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        glowCyan: '0 0 25px rgba(0, 240, 255, 0.35)',
+                        glowRed: '0 0 25px rgba(255, 42, 95, 0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0b0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+        /* Custom Glow Utility Classes */
+        .glow-text-cyan {
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+        }
+        .glow-text-red {
+            text-shadow: 0 0 12px rgba(255, 42, 95, 0.6);
+        }
+        .glass-panel {
+            background: rgba(18, 21, 28, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(10, 11, 14, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Grid background pattern */
+        .bg-cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-gray-100 font-sans antialiased selection:bg-neonCyan selection:text-black overflow-x-hidden bg-cyber-grid">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-neonRed to-neonCyan p-[2px] transform group-hover:rotate-12 transition-transform duration-300">
+                    <div class="w-full h-full bg-obsidian rounded-[6px] flex items-center justify-center">
+                        <i class="fa-solid font-orbitron text-xl text-neonCyan italic font-black">V</i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-orbitron font-black text-2xl tracking-wider text-white flex items-center">
+                        VELOCITY<span class="text-neonCyan">.</span>
+                    </span>
+                    <span class="text-[9px] font-rajdhani font-semibold tracking-widest text-gray-400 uppercase -mt-1">Next-Gen Motorcycles</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 font-rajdhani text-lg font-semibold tracking-wider text-gray-300">
+                <a href="#models" class="hover:text-neonCyan transition-colors duration-200">MODELS</a>
+                <a href="#customizer" class="hover:text-neonCyan transition-colors duration-200">CUSTOMIZER</a>
+                <a href="#innovation" class="hover:text-neonCyan transition-colors duration-200">INNOVATION</a>
+                <a href="#reviews" class="hover:text-neonCyan transition-colors duration-200">REVIEWS</a>
+            </nav>
+
+            <!-- Header Actions -->
+            <div class="hidden sm:flex items-center gap-4">
+                <button onclick="toggleSearchModal()" class="p-2.5 text-gray-400 hover:text-neonCyan glass-panel rounded-full transition-colors">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+                <button onclick="openTestRideModal()" class="relative group overflow-hidden rounded-lg px-6 py-2.5 font-orbitron font-bold text-sm tracking-wider uppercase text-black bg-neonCyan hover:shadow-glowCyan transition-all duration-300">
+                    <span class="relative z-10">Book Test Ride</span>
+                    <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-300 hover:text-neonCyan text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileNav" class="hidden md:hidden glass-panel border-b border-gray-800 px-6 py-6 space-y-4">
+            <a href="#models" onclick="toggleMobileNav()" class="block font-rajdhani text-xl font-bold text-gray-200 hover:text-neonCyan">MODELS</a>
+            <a href="#customizer" onclick="toggleMobileNav()" class="block font-rajdhani text-xl font-bold text-gray-200 hover:text-neonCyan">CUSTOMIZER</a>
+            <a href="#innovation" onclick="toggleMobileNav()" class="block font-rajdhani text-xl font-bold text-gray-200 hover:text-neonCyan">INNOVATION</a>
+            <a href="#reviews" onclick="toggleMobileNav()" class="block font-rajdhani text-xl font-bold text-gray-200 hover:text-neonCyan">REVIEWS</a>
+            <div class="pt-4 flex flex-col gap-3">
+                <button onclick="openTestRideModal(); toggleMobileNav();" class="w-full py-3 bg-neonCyan text-black font-orbitron font-bold text-center rounded-lg uppercase tracking-wider">
+                    Book Test Ride
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden">
+        <!-- Ambient Lighting Effects -->
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-neonCyan/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-neonRed/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 grid lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-6 space-y-8 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-neonCyan/30 text-neonCyan font-rajdhani font-semibold text-sm">
+                    <span class="w-2 h-2 rounded-full bg-neonCyan animate-ping"></span>
+                    THE FUTURE OF HYPER RACING HAS ARRIVED
+                </div>
+
+                <h1 class="font-orbitron font-black text-4xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-tight">
+                    UNLEASH <br/>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-neonCyan via-white to-neonRed glow-text-cyan">
+                        PURE SPEED
+                    </span>
+                </h1>
+
+                <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    Engineered with hyper-light titanium alloys, AI-boosted adaptive traction, and a 210 HP supercharged powertrain. Experience unparalleled power and precision.
+                </p>
+
+                <!-- Spec Highlights Bar -->
+                <div class="grid grid-cols-3 gap-4 pt-2 border-t border-b border-gray-800/80 py-4 max-w-lg mx-auto lg:mx-0">
+                    <div>
+                        <p class="font-orbitron font-bold text-2xl sm:text-3xl text-white">210 <span class="text-xs text-neonCyan font-sans">HP</span></p>
+                        <p class="text-xs font-rajdhani text-gray-400 uppercase tracking-widest">Max Power</p>
+                    </div>
+                    <div class="border-x border-gray-800 px-2">
+                        <p class="font-orbitron font-bold text-2xl sm:text-3xl text-white">2.6 <span class="text-xs text-neonCyan font-sans">s</span></p>
+                        <p class="text-xs font-rajdhani text-gray-400 uppercase tracking-widest">0-60 MPH</p>
+                    </div>
+                    <div>
+                        <p class="font-orbitron font-bold text-2xl sm:text-3xl text-white">205 <span class="text-xs text-neonCyan font-sans">MPH</span></p>
+                        <p class="text-xs font-rajdhani text-gray-400 uppercase tracking-widest">Top Speed</p>
+                    </div>
+                </div>
+
+                <!-- Call to Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    <a href="#models" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-neonCyan text-black font-orbitron font-bold uppercase text-sm tracking-widest hover:shadow-glowCyan hover:scale-105 transition-all duration-300">
+                        Explore Models <i class="fa-solid fa-arrow-right-long ml-2"></i>
+                    </a>
+                    <a href="#customizer" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl glass-panel text-white font-orbitron font-bold uppercase text-sm tracking-widest hover:border-neonRed hover:text-neonRed transition-all duration-300">
+                        Build Yours <i class="fa-solid fa-sliders ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Hero Image Showcase -->
+            <div class="lg:col-span-6 relative flex justify-center items-center">
+                <div class="relative w-full max-w-lg lg:max-w-none">
+                    <!-- Hero Glowing Backdrop -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-neonCyan/20 to-neonRed/20 rounded-full filter blur-3xl opacity-60 transform scale-95"></div>
+                    
+                    <!-- Main Featured Hero Bike Display -->
+                    <div class="relative z-10 glass-panel rounded-3xl p-6 md:p-8 border border-white/10 overflow-hidden group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-xs font-orbitron text-neonCyan tracking-widest uppercase">Flagship Edition</span>
+                                <h3 id="heroBikeTitle" class="font-orbitron font-bold text-2xl text-white">Apex V4 RR Nitro</h3>
+                            </div>
+                            <span id="heroBikePrice" class="font-orbitron text-xl font-black text-neonRed">$32,900</span>
+                        </div>
+
+                        <!-- Dynamic Image -->
+                        <div class="relative h-64 sm:h-80 my-4 flex items-center justify-center overflow-hidden">
+                            <img id="heroBikeImg" src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Flagship Superbike" 
+                                 class="w-full h-full object-contain object-center transform group-hover:scale-105 transition-transform duration-700 filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)]">
+                        </div>
+
+                        <!-- Hero Interactive Switcher -->
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-800">
+                            <span class="text-xs font-rajdhani uppercase text-gray-400 font-semibold tracking-wider">Select Preset Color:</span>
+                            <div class="flex gap-3">
+                                <button onclick="changeHeroBike(0)" class="w-6 h-6 rounded-full bg-cyan-400 ring-2 ring-offset-2 ring-offset-obsidian ring-neonCyan transform hover:scale-110 transition-transform" title="Cyan Stealth"></button>
+                                <button onclick="changeHeroBike(1)" class="w-6 h-6 rounded-full bg-red-600 hover:ring-2 hover:ring-offset-2 hover:ring-offset-obsidian hover:ring-red-500 transform hover:scale-110 transition-transform" title="Crimson Beast"></button>
+                                <button onclick="changeHeroBike(2)" class="w-6 h-6 rounded-full bg-amber-400 hover:ring-2 hover:ring-offset-2 hover:ring-offset-obsidian hover:ring-yellow-400 transform hover:scale-110 transition-transform" title="Cyber Gold"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FEATURED MODELS SECTION -->
+    <section id="models" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <h2 class="text-neonCyan font-orbitron font-bold text-sm tracking-widest uppercase mb-2">// FLEET LINEUP</h2>
+                    <p class="font-orbitron font-black text-3xl sm:text-5xl text-white">ENGINEERED FOR SUPREMACY</p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2 glass-panel p-1.5 rounded-xl self-start md:self-auto">
+                    <button onclick="filterBikes('all')" class="filter-btn active-filter px-5 py-2.5 rounded-lg font-rajdhani font-bold text-sm uppercase transition-all duration-200 bg-neonCyan text-black">All</button>
+                    <button onclick="filterBikes('superbike')" class="filter-btn px-5 py-2.5 rounded-lg font-rajdhani font-bold text-sm uppercase text-gray-400 hover:text-white transition-all duration-200">Superbike</button>
+                    <button onclick="filterBikes('hyper-electric')" class="filter-btn px-5 py-2.5 rounded-lg font-rajdhani font-bold text-sm uppercase text-gray-400 hover:text-white transition-all duration-200">Electric</button>
+                    <button onclick="filterBikes('adventure')" class="filter-btn px-5 py-2.5 rounded-lg font-rajdhani font-bold text-sm uppercase text-gray-400 hover:text-white transition-all duration-200">Adventure</button>
+                    <button onclick="filterBikes('cruiser')" class="filter-btn px-5 py-2.5 rounded-lg font-rajdhani font-bold text-sm uppercase text-gray-400 hover:text-white transition-all duration-200">Cruiser</button>
+                </div>
+            </div>
+
+            <!-- Bike Cards Grid -->
+            <div id="bikeGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Bike cards dynamically rendered via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE CUSTOMIZER SECTION -->
+    <section id="customizer" class="py-24 bg-cardBg/40 border-y border-gray-800/60 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-neonRed font-orbitron font-bold text-sm tracking-widest uppercase mb-2 block">// BUILD YOUR BEAST</span>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white">LIVE 3D & COLOR CONFIGURATOR</h2>
+                <p class="text-gray-400 mt-4 text-base">Select finishes, add carbon fiber packages, and tailor specs in real-time before booking your ride.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-center glass-panel p-6 sm:p-10 rounded-3xl border border-white/10">
+                
+                <!-- Bike Preview Display Window -->
+                <div class="lg:col-span-8 relative flex flex-col items-center justify-center min-h-[380px] sm:min-h-[460px] bg-obsidian/80 rounded-2xl p-6 border border-gray-800 overflow-hidden">
+                    
+                    <!-- Background Dynamic Neon Aura -->
+                    <div id="customizerGlow" class="absolute w-80 h-80 rounded-full blur-[100px] transition-all duration-500 bg-neonCyan/20"></div>
+
+                    <!-- Customizer Image -->
+                    <div class="relative z-10 w-full h-full flex items-center justify-center">
+                        <img id="customizerImg" src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80" 
+                             alt="Customizable Bike" 
+                             class="max-h-[340px] w-auto object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.9)] transition-all duration-500">
+                    </div>
+
+                    <!-- Visual Indicator Badges -->
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span id="finishBadge" class="text-[11px] font-orbitron font-bold px-3 py-1 rounded-full bg-neonCyan/20 text-neonCyan border border-neonCyan/40 uppercase">
+                            Matte Stealth Black
+                        </span>
+                    </div>
+
+                    <div class="absolute bottom-4 right-4 text-xs font-rajdhani text-gray-500 flex items-center gap-1">
+                        <i class="fa-solid fa-arrows-rotate animate-spin text-neonCyan"></i> Live 360 Render
+                    </div>
+                </div>
+
+                <!-- Customization Controls Panel -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div>
+                        <h3 class="font-orbitron font-bold text-2xl text-white">Velocity Apex-X</h3>
+                        <p class="text-gray-400 text-sm">Hyper-Sport Modular Chassis</p>
+                    </div>
+
+                    <!-- Paint Options -->
+                    <div class="space-y-3">
+                        <label class="font-rajdhani font-bold text-sm tracking-wider uppercase text-gray-300">1. Body Paint & Finish</label>
+                        <div class="grid grid-cols-4 gap-3">
+                            <button onclick="setCustomColor('black', 'Matte Stealth Black', '#0a0b0e', 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80')" class="color-btn active-color p-2 rounded-xl bg-obsidian border-2 border-neonCyan flex flex-col items-center gap-1">
+                                <span class="w-6 h-6 rounded-full bg-gray-900 border border-gray-700"></span>
+                                <span class="text-[10px] font-orbitron text-gray-300">Obsidian</span>
+                            </button>
+                            <button onclick="setCustomColor('red', 'Crimson Flare Red', '#ff2a5f', 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80')" class="color-btn p-2 rounded-xl bg-obsidian border-2 border-transparent hover:border-gray-600 flex flex-col items-center gap-1">
+                                <span class="w-6 h-6 rounded-full bg-red-600"></span>
+                                <span class="text-[10px] font-orbitron text-gray-300">Crimson</span>
+                            </button>
+                            <button onclick="setCustomColor('cyan', 'Neon Cyber Cyan', '#00f0ff', 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=1200&q=80')" class="color-btn p-2 rounded-xl bg-obsidian border-2 border-transparent hover:border-gray-600 flex flex-col items-center gap-1">
+                                <span class="w-6 h-6 rounded-full bg-cyan-400"></span>
+                                <span class="text-[10px] font-orbitron text-gray-300">Cyber</span>
+                            </button>
+                            <button onclick="setCustomColor('yellow', 'Acid Neon Gold', '#ffe600', 'https://images.unsplash.com/photo-1558980868-f9381510d728?auto=format&fit=crop&w=1200&q=80')" class="color-btn p-2 rounded-xl bg-obsidian border-2 border-transparent hover:border-gray-600 flex flex-col items-center gap-1">
+                                <span class="w-6 h-6 rounded-full bg-yellow-400"></span>
+                                <span class="text-[10px] font-orbitron text-gray-300">Acid</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Accessories Toggles -->
+                    <div class="space-y-3">
+                        <label class="font-rajdhani font-bold text-sm tracking-wider uppercase text-gray-300">2. Performance Packages</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center justify-between p-3 rounded-xl bg-obsidian/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                <span class="flex items-center gap-2 text-xs font-semibold">
+                                    <input type="checkbox" onchange="toggleOption(this, 2500)" class="rounded bg-gray-900 border-gray-700 text-neonCyan focus:ring-neonCyan">
+                                    Akrapovič Titanium Race Exhaust
+                                </span>
+                                <span class="text-xs font-orbitron text-neonCyan">+$2,500</span>
+                            </label>
+                            <label class="flex items-center justify-between p-3 rounded-xl bg-obsidian/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                <span class="flex items-center gap-2 text-xs font-semibold">
+                                    <input type="checkbox" onchange="toggleOption(this, 1800)" class="rounded bg-gray-900 border-gray-700 text-neonCyan focus:ring-neonCyan">
+                                    Carbon Fiber Aero Winglets
+                                </span>
+                                <span class="text-xs font-orbitron text-neonCyan">+$1,800</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Total Price & CTA -->
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-rajdhani text-gray-400 uppercase block">Total Custom Price</span>
+                            <span id="customPrice" class="font-orbitron font-black text-2xl text-white">$28,500</span>
+                        </div>
+                        <button onclick="openCustomConfigModal()" class="px-6 py-3 bg-neonCyan text-black font-orbitron font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-glowCyan transition-all">
+                            Save Configuration
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECH & INNOVATION SPECS SECTION -->
+    <section id="innovation" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-neonCyan font-orbitron font-bold text-sm tracking-widest uppercase mb-2 block">// FUTURE-PROOF ENGINEERING</span>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white">REDEFINING SUPERBIKE TECH</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Tech Feature 1 -->
+                <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-neonCyan/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-neonCyan/10 flex items-center justify-center text-neonCyan text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">AI Neural Ride Control</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Adapts lean angle sensitivity, ABS, and torque output 1,000 times per second using predictive machine learning.</p>
+                </div>
+
+                <!-- Tech Feature 2 -->
+                <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-neonRed/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-neonRed/10 flex items-center justify-center text-neonRed text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Carbon Fiber Monocoque</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Aerospace-grade carbon weave frame delivers maximum torsional rigidity at 30% lower weight than aluminum.</p>
+                </div>
+
+                <!-- Tech Feature 3 -->
+                <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-neonYellow/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-neonYellow/10 flex items-center justify-center text-neonYellow text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Smart Telemetry Cockpit</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Full 7" OLED HUD console with lap timing, tire temperature sensors, and smartphone heads-up navigation.</p>
+                </div>
+
+                <!-- Tech Feature 4 -->
+                <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-neonCyan/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-neonCyan/10 flex items-center justify-center text-neonCyan text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Bi-Directional Quickshifter</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Seamless clutchless gear shifts up and down with rev-matching precision for race track optimization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS & TESTIMONIALS SECTION -->
+    <section id="reviews" class="py-24 bg-cardBg/30 border-t border-gray-800/60 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-16 gap-4">
+                <div>
+                    <span class="text-neonRed font-orbitron font-bold text-sm tracking-widest uppercase mb-2 block">// RIDER FEEDBACK</span>
+                    <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white">VOICES FROM THE TARMAC</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="flex text-yellow-400 text-lg">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="font-orbitron font-bold text-white text-lg">4.9/5</span>
+                    <span class="text-xs text-gray-400 font-rajdhani">(from 1,280+ Riders)</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review Card 1 -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between border border-white/5">
+                    <div class="space-y-4">
+                        <div class="flex text-yellow-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed italic">
+                            "The Apex V4 RR Nitro is unlike anything I've ever ridden on the track. The acceleration in track mode feels almost telepathic, and the lean stability is mind-blowing."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4 mt-6 pt-4 border-t border-gray-800">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Rider" class="w-10 h-10 rounded-full object-cover border border-neonCyan">
+                        <div>
+                            <h4 class="font-orbitron font-bold text-sm text-white">Elena Rostova</h4>
+                            <span class="text-xs font-rajdhani text-neonCyan flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Verified Apex V4 Owner
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between border border-white/5">
+                    <div class="space-y-4">
+                        <div class="flex text-yellow-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed italic">
+                            "Switched from a conventional cruiser to the Volt Cyber-X electric. 220 miles range and instantaneous torque make my daily commutes effortless and exhilarating!"
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4 mt-6 pt-4 border-t border-gray-800">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Rider" class="w-10 h-10 rounded-full object-cover border border-neonCyan">
+                        <div>
+                            <h4 class="font-orbitron font-bold text-sm text-white">Marcus Vance</h4>
+                            <span class="text-xs font-rajdhani text-neonCyan flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Verified Volt-X Owner
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between border border-white/5">
+                    <div class="space-y-4">
+                        <div class="flex text-yellow-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed italic">
+                            "The customizer let me build the exact carbon-accented spec I dreamed of. Delivery was seamless and the dealership experience was premium top to bottom."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4 mt-6 pt-4 border-t border-gray-800">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Rider" class="w-10 h-10 rounded-full object-cover border border-neonCyan">
+                        <div>
+                            <h4 class="font-orbitron font-bold text-sm text-white">David Miller</h4>
+                            <span class="text-xs font-rajdhani text-neonCyan flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Verified Terra Rally Owner
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-obsidian border-t border-gray-800 pt-16 pb-8 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-gray-800">
+                
+                <!-- Brand Info -->
+                <div class="lg:col-span-2 space-y-4">
+                    <a href="#" class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded bg-gradient-to-tr from-neonRed to-neonCyan p-[2px]">
+                            <div class="w-full h-full bg-obsidian rounded-[3px] flex items-center justify-center">
+                                <i class="fa-solid font-orbitron text-neonCyan font-bold">V</i>
+                            </div>
+                        </div>
+                        <span class="font-orbitron font-black text-xl text-white">VELOCITY<span class="text-neonCyan">.</span></span>
+                    </a>
+                    <p class="text-sm text-gray-400 max-w-sm">
+                        Redefining motorcycle performance through next-generation hyper-engineering, intelligent ride assistance, and futuristic aesthetics.
+                    </p>
+                    <div class="flex gap-3 text-lg pt-2">
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-neonCyan hover:border-neonCyan transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-neonCyan hover:border-neonCyan transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-neonCyan hover:border-neonCyan transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-neonCyan hover:border-neonCyan transition-colors"><i class="fa-brands fa-discord"></i></a>
+                    </div>
+                </div>
+
+                <!-- Navigation Links 1 -->
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-sm tracking-wider uppercase mb-4">Motorcycles</h4>
+                    <ul class="space-y-2 text-sm font-rajdhani">
+                        <li><a href="#models" class="hover:text-neonCyan transition-colors">Superbikes</a></li>
+                        <li><a href="#models" class="hover:text-neonCyan transition-colors">Hyper-Electric</a></li>
+                        <li><a href="#models" class="hover:text-neonCyan transition-colors">Adventure Tourers</a></li>
+                        <li><a href="#models" class="hover:text-neonCyan transition-colors">Urban Cruisers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Navigation Links 2 -->
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-sm tracking-wider uppercase mb-4">Experience</h4>
+                    <ul class="space-y-2 text-sm font-rajdhani">
+                        <li><a href="#customizer" class="hover:text-neonCyan transition-colors">3D Customizer</a></li>
+                        <li><a href="javascript:void(0)" onclick="openTestRideModal()" class="hover:text-neonCyan transition-colors">Book Test Ride</a></li>
+                        <li><a href="#innovation" class="hover:text-neonCyan transition-colors">Innovation Lab</a></li>
+                        <li><a href="#" class="hover:text-neonCyan transition-colors">Dealer Network</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter Subscription -->
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-sm tracking-wider uppercase mb-4">Stay Powered</h4>
+                    <p class="text-xs text-gray-400 mb-3">Subscribe for exclusive launch events and track day invites.</p>
+                    <form onsubmit="handleNewsletter(event)" class="space-y-2">
+                        <input type="email" required placeholder="Enter your email" class="w-full px-4 py-2.5 rounded-lg bg-cardBg border border-gray-800 text-sm focus:outline-none focus:border-neonCyan text-white">
+                        <button type="submit" class="w-full py-2.5 bg-neonCyan text-black font-orbitron font-bold text-xs uppercase tracking-wider rounded-lg hover:shadow-glowCyan transition-all">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Copyright Footer -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 font-rajdhani gap-4">
+                <p>&copy; 2026 VELOCITY Motorcycles Inc. All Rights Reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-gray-300">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-300">Terms of Service</a>
+                    <a href="#" class="hover:text-gray-300">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TEST RIDE BOOKING MODAL -->
+    <div id="testRideModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-panel w-full max-w-xl rounded-3xl p-6 sm:p-8 border border-white/10 relative transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+            
+            <button onclick="closeTestRideModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="mb-6">
+                <span class="text-neonCyan font-orbitron text-xs tracking-widest uppercase">// EXPERIENCE THE POWER</span>
+                <h3 class="font-orbitron font-bold text-2xl text-white">Book Your Test Ride</h3>
+            </div>
+
+            <form id="testRideForm" onsubmit="submitTestRide(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-orbitron text-gray-300 uppercase mb-1">Select Bike Model</label>
+                    <select id="modalBikeSelect" required class="w-full px-4 py-3 rounded-xl bg-obsidian border border-gray-800 text-white text-sm focus:border-neonCyan focus:outline-none">
+                        <option value="Apex V4 RR Nitro">Apex V4 RR Nitro ($32,900)</option>
+                        <option value="Volt Cyber-X Electric">Volt Cyber-X Electric ($24,500)</option>
+                        <option value="Terra Rally 1200">Terra Rally 1200 ($21,800)</option>
+                        <option value="Phantom Shadow 1800">Phantom Shadow 1800 ($26,900)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-orbitron text-gray-300 uppercase mb-1">Full Name</label>
+                        <input type="text" required placeholder="Alex Mercer" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-gray-800 text-white text-sm focus:border-neonCyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-orbitron text-gray-300 uppercase mb-1">Phone Number</label>
+                        <input type="tel" required placeholder="+1 (555) 000-0000" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-gray-800 text-white text-sm focus:border-neonCyan focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-orbitron text-gray-300 uppercase mb-1">Preferred Date</label>
+                        <input type="date" required class="w-full px-4 py-3 rounded-xl bg-obsidian border border-gray-800 text-white text-sm focus:border-neonCyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-orbitron text-gray-300 uppercase mb-1">Dealership Location</label>
+                        <select required class="w-full px-4 py-3 rounded-xl bg-obsidian border border-gray-800 text-white text-sm focus:border-neonCyan focus:outline-none">
+                            <option value="california">Los Angeles Flagship Store</option>
+                            <option value="newyork">New York Velocity Center</option>
+                            <option value="miami">Miami Superbike Hub</option>
+                            <option value="london">London Velocity Studio</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 mt-2 bg-neonCyan text-black font-orbitron font-bold uppercase tracking-wider rounded-xl hover:shadow-glowCyan transition-all">
+                    Confirm VIP Booking
+                </button>
+            </form>
+
+            <!-- Success Message Notification Container -->
+            <div id="modalSuccess" class="hidden text-center py-8 space-y-4">
+                <div class="w-16 h-16 rounded-full bg-neonCyan/20 text-neonCyan flex items-center justify-center text-3xl mx-auto border border-neonCyan">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-2xl text-white">Test Ride Scheduled!</h4>
+                <p class="text-gray-300 text-sm max-w-md mx-auto">
+                    Your reservation has been confirmed. A Velocity Concierge representative will contact you shortly to confirm safety gear requirements.
+                </p>
+                <button onclick="closeTestRideModal()" class="px-8 py-3 bg-white text-black font-orbitron font-bold text-xs uppercase rounded-xl">
+                    Close Window
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 border border-white/10 relative">
+            <div class="flex items-center gap-4 border-b border-gray-800 pb-4">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-xl"></i>
+                <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Search superbikes, specs, or electric models..." class="w-full bg-transparent text-white font-orbitron text-lg focus:outline-none">
+                <button onclick="toggleSearchModal()" class="text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div id="searchResults" class="mt-4 space-y-3 max-h-60 overflow-y-auto">
+                <p class="text-xs font-rajdhani text-gray-500 uppercase">Suggested Searches: Superbike, Electric, 200HP, Customizer</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bikesData = [
+            {
+                id: 'apex-v4',
+                name: 'Apex V4 RR Nitro',
+                category: 'superbike',
+                price: 32900,
+                hp: '210 HP',
+                engine: '998cc V4 Supercharged',
+                weight: '172 kg',
+                image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+                badge: 'Flagship Superbike'
+            },
+            {
+                id: 'volt-cyber',
+                name: 'Volt Cyber-X Electric',
+                category: 'hyper-electric',
+                price: 24500,
+                hp: '180 HP',
+                engine: 'Dual Quantum-Motor',
+                weight: '190 kg',
+                image: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&q=80',
+                badge: '0-100% in 20 Mins'
+            },
+            {
+                id: 'terra-rally',
+                name: 'Terra Rally 1200',
+                category: 'adventure',
+                price: 21800,
+                hp: '145 HP',
+                engine: '1200cc Parallel-Twin',
+                weight: '205 kg',
+                image: 'https://images.unsplash.com/photo-1558980868-f9381510d728?auto=format&fit=crop&w=800&q=80',
+                badge: 'All-Terrain Ready'
+            },
+            {
+                id: 'phantom-1800',
+                name: 'Phantom Shadow 1800',
+                category: 'cruiser',
+                price: 26900,
+                hp: '125 HP',
+                engine: '1800cc Boxer Twin',
+                weight: '260 kg',
+                image: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=800&q=80',
+                badge: 'Luxury Cruiser'
+            },
+            {
+                id: 'venom-rr',
+                name: 'Venom RR Lightweight',
+                category: 'superbike',
+                price: 29400,
+                hp: '200 HP',
+                engine: '1000cc Inline-4',
+                weight: '165 kg',
+                image: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&q=80',
+                badge: 'Track Weapon'
+            },
+            {
+                id: 'e-blade',
+                name: 'E-Blade Hyper Urban',
+                category: 'hyper-electric',
+                price: 19800,
+                hp: '120 HP',
+                engine: 'Direct-Drive Hub',
+                weight: '150 kg',
+                image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+                badge: 'Urban Stealth'
+            }
+        ];
+
+        /* Hero Bike Switcher Data */
+        const heroBikePresets = [
+            {
+                title: "Apex V4 RR Nitro",
+                price: "$32,900",
+                img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80"
+            },
+            {
+                title: "Apex V4 Crimson Edition",
+                price: "$34,200",
+                img: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1000&q=80"
+            },
+            {
+                title: "Apex V4 Cyber Gold",
+                price: "$35,500",
+                img: "https://images.unsplash.com/photo-1558980868-f9381510d728?auto=format&fit=crop&w=1000&q=80"
+            }
+        ];
+
+        /* Customizer Base Price */
+        let baseCustomPrice = 28500;
+        let selectedOptionsPrice = 0;
+
+        function renderBikeCards(filter = 'all') {
+            const grid = document.getElementById('bikeGrid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? bikesData 
+                : bikesData.filter(b => b.category === filter);
+
+            filtered.forEach(bike => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-3xl p-6 border border-white/5 hover:border-neonCyan/40 transition-all duration-300 flex flex-col justify-between group';
+                card.innerHTML = `
+                    <div>
+                        <!-- Header / Badge -->
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-[10px] font-orbitron font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-neonCyan/10 text-neonCyan border border-neonCyan/20">
+                                ${bike.badge}
+                            </span>
+                            <span class="font-orbitron font-black text-xl text-white">$${bike.price.toLocaleString()}</span>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="relative h-48 my-4 flex items-center justify-center overflow-hidden">
+                            <img src="${bike.image}" alt="${bike.name}" class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500">
+                        </div>
+
+                        <!-- Title -->
+                        <h3 class="font-orbitron font-bold text-xl text-white mb-4">${bike.name}</h3>
+
+                        <!-- Specs Grid -->
+                        <div class="grid grid-cols-3 gap-2 py-3 border-y border-gray-800 text-center mb-6">
+                            <div>
+                                <span class="text-xs font-orbitron font-bold text-white block">${bike.hp}</span>
+                                <span class="text-[10px] font-rajdhani text-gray-400 uppercase">Power</span>
+                            </div>
+                            <div class="border-x border-gray-800">
+                                <span class="text-xs font-orbitron font-bold text-white block truncate px-1">${bike.engine}</span>
+                                <span class="text-[10px] font-rajdhani text-gray-400 uppercase">Engine</span>
+                            </div>
+                            <div>
+                                <span class="text-xs font-orbitron font-bold text-white block">${bike.weight}</span>
+                                <span class="text-[10px] font-rajdhani text-gray-400 uppercase">Weight</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="selectBikeForRide('${bike.name}')" class="py-2.5 rounded-xl bg-neonCyan text-black font-orbitron font-bold text-xs uppercase tracking-wider hover:shadow-glowCyan transition-all text-center">
+                            Test Ride
+                        </button>
+                        <a href="#customizer" class="py-2.5 rounded-xl glass-panel text-white font-orbitron font-bold text-xs uppercase tracking-wider hover:border-neonCyan transition-all text-center flex items-center justify-center">
+                            Configure
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterBikes(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-neonCyan', 'text-black');
+                btn.classList.add('text-gray-400');
+            });
+            event.target.classList.add('bg-neonCyan', 'text-black');
+            event.target.classList.remove('text-gray-400');
+            renderBikeCards(category);
+        }
+
+        /* Hero Switcher */
+        function changeHeroBike(index) {
+            const preset = heroBikePresets[index];
+            const img = document.getElementById('heroBikeImg');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('heroBikeTitle').innerText = preset.title;
+                document.getElementById('heroBikePrice').innerText = preset.price;
+                img.src = preset.img;
+                img.style.opacity = '1';
+            }, 200);
+        }
+
+        function setCustomColor(colorKey, finishName, glowHex, imgUrl) {
+            document.getElementById('finishBadge').innerText = finishName;
+            document.getElementById('customizerImg').src = imgUrl;
+            
+            const glow = document.getElementById('customizerGlow');
+            glow.style.backgroundColor = glowHex;
+
+            // Highlight color button
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('border-neonCyan');
+                btn.classList.add('border-transparent');
+            });
+            event.currentTarget.classList.add('border-neonCyan');
+            event.currentTarget.classList.remove('border-transparent');
+        }
+
+        function toggleOption(checkbox, price) {
+            if(checkbox.checked) {
+                selectedOptionsPrice += price;
+            } else {
+                selectedOptionsPrice -= price;
+            }
+            updateCustomPrice();
+        }
+
+        function updateCustomPrice() {
+            const total = baseCustomPrice + selectedOptionsPrice;
+            document.getElementById('customPrice').innerText = `$${total.toLocaleString()}`;
+        }
+
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobileNav');
+            nav.classList.toggle('hidden');
+        }
+
+        document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileNav);
+
+        function openTestRideModal() {
+            const modal = document.getElementById('testRideModal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+        }
+
+        function closeTestRideModal() {
+            const modal = document.getElementById('testRideModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            
+            // Reset form status
+            setTimeout(() => {
+                document.getElementById('testRideForm').classList.remove('hidden');
+                document.getElementById('modalSuccess').classList.add('hidden');
+            }, 300);
+        }
+
+        function selectBikeForRide(bikeName) {
+            document.getElementById('modalBikeSelect').value = bikeName;
+            openTestRideModal();
+        }
+
+        function submitTestRide(e) {
+            e.preventDefault();
+            document.getElementById('testRideForm').classList.add('hidden');
+            document.getElementById('modalSuccess').classList.remove('hidden');
+        }
+
+        function openCustomConfigModal() {
+            selectBikeForRide('Velocity Apex-X Custom');
+        }
+
+        function toggleSearchModal() {
+            const modal = document.getElementById('searchModal');
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+            if(!modal.classList.contains('opacity-0')) {
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        function handleSearch(query) {
+            const results = document.getElementById('searchResults');
+            if(!query.trim()) {
+                results.innerHTML = `<p class="text-xs font-rajdhani text-gray-500 uppercase">Suggested Searches: Superbike, Electric, 200HP, Customizer</p>`;
+                return;
+            }
+
+            const matched = bikesData.filter(b => 
+                b.name.toLowerCase().includes(query.toLowerCase()) || 
+                b.category.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if(matched.length === 0) {
+                results.innerHTML = `<p class="text-sm text-gray-400">No superbikes matched "${query}"</p>`;
+            } else {
+                results.innerHTML = matched.map(b => `
+                    <div onclick="selectBikeForRide('${b.name}'); toggleSearchModal();" class="p-3 rounded-xl bg-obsidian border border-gray-800 hover:border-neonCyan cursor-pointer flex items-center justify-between">
+                        <div>
+                            <p class="font-orbitron font-bold text-sm text-white">${b.name}</p>
+                            <p class="text-xs text-neonCyan font-rajdhani">${b.hp} - $${b.price.toLocaleString()}</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function handleNewsletter(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing to VELOCITY updates!');
+            e.target.reset();
+        }
+
+        // Initialize component view on window load
+        window.onload = function() {
+            renderBikeCards();
+        }
+    </script>
+</body>
+</html>

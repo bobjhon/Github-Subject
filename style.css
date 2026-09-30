@@ -1,0 +1,44 @@
+/* Reset basic margin and padding for predictable layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base styles for the page body */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+/* Distinct styling for each heading level */
+h1 {
+    font-size: 2.5rem;
+    color: #1a73e8;
+    border-bottom: 3px solid #1a73e8;
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #34a853;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #fbbc05;
+}
+
+h4 {
+    font-size: 1.2rem;
+    color: #ea4335;
+    font-style: italic;
+}
